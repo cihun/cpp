@@ -5,4 +5,6 @@ using namespace std;
 
 void hello_world();
 
+void print_x();
+
 #endif

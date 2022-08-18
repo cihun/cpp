@@ -14,19 +14,21 @@ all:RM_D $(OBJS) RUN
 
 
 RM_D:
-	-mkdir $(DIR_D)
-	-rm -f $(FILE_D)
-	touch $(FILE_D)
-	echo '$$@'
-	@echo "a:"$(addsuffix .o,$(OBJS)) > $(FILE_D)
-	@echo '	cd $(DIR_OBJ);g++ -o $(DIR_BIN)/$$@ $$^' >> $(FILE_D)
+	@-mkdir $(DIR_D)
+	@-rm -f $(FILE_D)
+	@touch $(FILE_D)
+	@echo "$(DIR_BIN)/a:"$(addprefix $(DIR_OBJ)/,$(addsuffix .o,$(OBJS))) > $(FILE_D)
+	@echo '	cd $(DIR_OBJ);g++ -o $$@ $$^' >> $(FILE_D)
 $(OBJS):%:%.cpp
-	@#g++ -c -g -o $@ $<
-	@#mv $@ $(DIR_OBJ)/$@.o
-	@#echo $<
-	@g++ -MM $< >> $(FILE_D)
-	@echo "	g++ -c -g -o $@ ../src/$<" >> $(FILE_D)
-	@echo "	mv $@ $(DIR_OBJ)/$@.o" >> $(FILE_D)
+	@cache_=$$(g++ -MM $<);\
+	echo $(DIR_OBJ)/$${cache_} >> $(FILE_D);
+	@echo '	g++ -c -g -o $$@ $$<' >> $(FILE_D)
+	@#echo "	mv $@ $(DIR_OBJ)/$@.o" >> $(FILE_D)
 RUN:
-	echo 'asdf'
 	make -f $(FILE_D)
+
+.PHONY:clean
+
+clean:
+	-rm -f $(DIR_OBJ)/*.o
+	-rm -f $(DIR_BIN)/*

@@ -5,8 +5,8 @@ strs = "a     b     c     "
 DIRS=src obj
 all:
 	#-mkdir bin
-	$(foreach x,$(DIRS),make -C $(x);)
-	#make -C src
+	#$(foreach x,$(DIRS),make -C $(x);)
+	make -C src
 	#make -C obj
 	
 

@@ -7,6 +7,7 @@ int main(){
     cout << x << " " << y << endl;
     Swap(x,y);
     cout << y << " " << x << endl; 
+    cout << "adsf" << endl;
     cin.get();
     return 0;
 }
