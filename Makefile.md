@@ -82,4 +82,18 @@ Makefile函数的使用如下所示：
 
 加前缀函数，把`<prefix>`加到`<names>`中每个单词的后面。
 
-    
+    $(join <list1>;<list2>)
+
+连接函数，例如`$(join aaa bbb; c c c c c c)`是`aaac bbbc c c c c`
+
+## foreach函数
+
+foreach函数是用来做循环用的。
+
+    $(foreach <var>,<list>,<text>)
+
+该函数的意义是，把参数`<list>`中的单词逐一取出来然后放入参数`<var>`,再执行`<text>`里面所含的表达式。
+其中，`<var>`只是一个局部变量，在该条命令结束之后将不再存在。
+
+## if函数
+
