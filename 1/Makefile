@@ -1,10 +1,14 @@
 
 .PHONY : all clean
 
+strs = "a     b     c     "
+DIRS=src obj
 all:
-	-mkdir bin
-	make -C src
-	make -C obj
+	#-mkdir bin
+	$(foreach x,$(DIRS),make -C $(x);)
+	#make -C src
+	#make -C obj
+	
 
 export
 
