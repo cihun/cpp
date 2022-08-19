@@ -14,7 +14,8 @@ all:RM_D $(OBJS) RUN
 
 
 RM_D:
-	@-mkdir $(DIR_D)
+	@if test -s $(DIR_D);\
+	then echo "目录已创建"; else mkdir $(DIR_D) fi
 	@-rm -f $(FILE_D)
 	@touch $(FILE_D)
 	@echo "$(DIR_BIN)/a:"$(addprefix $(DIR_OBJ)/,$(addsuffix .o,$(OBJS))) > $(FILE_D)
