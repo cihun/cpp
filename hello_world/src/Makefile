@@ -1,13 +1,10 @@
 
-SRCS = $(wildcard *.cpp)
+SRCS = $(wildcard $(DIR_SRC)/*.cpp)
 
 OBJS = $(SRCS:.cpp=)
-OBJS_D = $(addsuffix .d,$(OBJS))
-DIR_1 = ..
-DIR_D = $(DIR_1)/D
-DIR_BIN = $(DIR_1)/bin
-DIR_OBJ = $(DIR_1)/obj
-FILE_D = $(DIR_D)/$@.d
+OBJS_D = $(addsuffix .d,$(notdir, $(OBJS)))
+FILE_D = $@.d
+F = $@
 
 .PHONY:clean MK_D $(OBJS) RUN all
 
@@ -16,15 +13,22 @@ all:RM_D $(OBJS) RUN
 RM_D:
 	@if test -s $(DIR_D);\
 	then echo "目录已创建"; else mkdir $(DIR_D) ;fi
-	@-rm -f $(DIR_D)/*
+	@-rm -f $(DIR)/D/*
+	echo $(OBJS)
+	echo 
+
 $(OBJS):%:%.cpp
-	echo "CPPFLAGS=-g -I ../include\n"'VPATH = ../src ../obj ../include'"\nvpath = %.o ../obj" >> $(FILE_D)
-	g++ -MM -I ../include $< >> $(FILE_D)
+
+	echo "CPPFLAGS=-g\n"'VPATH = $(DIR_SRC) ../include'"\nvpath = %.o $(DIR_OBJ)" >> $(DIR_D)/$(notdir $(FILE_D))
+	echo all:$(DIR_OBJ)/$(notdir $@.o) >> $(DIR_D)/$(notdir $(FILE_D))
+	echo $(DIR_OBJ)/$(shell g++ -MM $<) >> $(DIR_D)/$(notdir $(FILE_D))
+	echo '	g++ $$(CPPFLAGS) -o $$@ -c $$<' >> $(DIR_D)/$(notdir $(FILE_D))
 
 	
 RUN:
 	#make -f $(FILE_D)
-	$(foreach var,$(OBJS),make -f $(DIR_D)/$(var).d -C $(DIR_OBJ)/;)
+	$(foreach var,$(OBJS),make -f $(DIR_D)/$(notdir $(var)).d -C .;)
+	#make -f $(DIR_D)/a.d -C .
 
 .PHONY:clean 
 
