@@ -16,6 +16,10 @@ all:RM_D $(OBJS) RUN
 RM_D:
 	@if test -s $(DIR_D);\
 	then echo "目录已创建"; else mkdir $(DIR_D) ;fi
+	@if test -s $(DIR_BIN);\
+	then echo ""; else mkdir $(DIR_BIN) ;fi
+	@if test -s $(DIR_OBJ);\
+	then echo ""; else mkdir $(DIR_OBJ) ;fi
 	@-rm -f $(DIR_D)/*
 $(OBJS):%:%.cpp
 	echo "CPPFLAGS=-g -I ../include\n"'VPATH = ../src ../obj ../include'"\nvpath = %.o ../obj" >> $(FILE_D)
